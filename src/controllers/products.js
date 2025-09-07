@@ -35,12 +35,15 @@ export const createProductController = async (req, res) => {
     });
 };
 
-export const patchProductController = async (req, res) => {
+export const patchProductController = async (req, res, next) => {
     const { productId } = req.params;
-    const result = await updateProduct(productId, req.body);
+    const product = await updateProduct(productId, req.body);
+    if (!product) {
+        throw createHttpError(404, 'Product not found!');
+    }
     res.json({
         status: 200,
         message: 'Successfully patched a product!',
-        data: result,
+        data: product,
     });
 };
