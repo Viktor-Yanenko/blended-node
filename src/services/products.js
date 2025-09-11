@@ -19,3 +19,8 @@ export const updateProduct = async (productId, payload) => {
     const product = await ProductModel.findOneAndUpdate({_id: productId}, payload, {new: true});
     return product;
 };
+
+export const deleteProduct = async (productId) => {
+    const product = await ProductModel.findOneAndDelete({ _id: productId });
+    return product;
+};

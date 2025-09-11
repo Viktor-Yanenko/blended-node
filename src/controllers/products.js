@@ -1,5 +1,5 @@
 import createHttpError from "http-errors";
-import { createProduct, getAllProducts, getProductById, updateProduct } from "../services/products.js";
+import { createProduct, deleteProduct, getAllProducts, getProductById, updateProduct } from "../services/products.js";
 
 export const getProductsController = async (req, res) => {
     const products = await getAllProducts();
@@ -35,7 +35,7 @@ export const createProductController = async (req, res) => {
     });
 };
 
-export const patchProductController = async (req, res, next) => {
+export const patchProductController = async (req, res) => {
     const { productId } = req.params;
     const product = await updateProduct(productId, req.body);
     if (!product) {
@@ -46,4 +46,13 @@ export const patchProductController = async (req, res, next) => {
         message: 'Successfully patched a product!',
         data: product,
     });
+};
+
+export const deleteProductController = async (req, res) => {
+    const { productId } = req.params;
+    const product = await deleteProduct(productId);
+    if (!product) {
+        throw createHttpError(404, 'Product not found!');
+    }
+    res.status(204).send();
 };
